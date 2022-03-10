@@ -80,7 +80,7 @@ func Decrypt(encryptedBody EncryptedBody) (*DecryptedBody, error) {
 	// Decrypt the ciphertext.
 	decBytes, ok := box.Open(nil, []byte(encrypted), &nonceBytes, &submissionPublicKeyBytes, &formPrivateKeyBytes)
 	if !ok {
-		return nil, fmt.Errorf("Failed to decrypt content")
+		return nil, fmt.Errorf("failed to decrypt content")
 	}
 
 	var fields []Field
