@@ -38,10 +38,11 @@ type DecryptedBody struct {
 
 // Field
 type Field struct {
-	ID        string `json:"_id"`
-	Answer    string `json:"answer"`
-	FieldType string `json:"fieldType"`
-	Question  string `json:"question"`
+	ID          string   `json:"_id"`
+	Answer      string   `json:"answer"`
+	AnswerArray []string `json:"answerArray"`
+	FieldType   string   `json:"fieldType"`
+	Question    string   `json:"question"`
 }
 
 type Attachment struct {
