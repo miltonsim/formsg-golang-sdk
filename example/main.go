@@ -1,32 +1,3 @@
-# FormSG Golang SDK
-
-This SDK provides convenient utilities for verifying FormSG webhooks and decrypting submissions in golang.
-
-## Installation
-
-Install the package with
-
-```bash
-go get github.com/afnexus/formsg-golang-sdk
-```
-
-## Configuration
-
-```go
-import (
-    "github.com/afnexus/formsg-golang-sdk"
-)
-```
-
-| Option | Default      | Description                                                     |
-| ------ | ------------ | --------------------------------------------------------------- |
-| mode   | 'production' | Set to 'staging' if integrating against FormSG staging servers. |
-
-## Usage
-
-### Webhook Authentication and Decrypting Submissions
-
-```go
 package main
 
 import (
@@ -140,5 +111,3 @@ func main() {
 	http.HandleFunc("/submissions", submissions)
 	http.ListenAndServe(":8080", nil)
 }
-
-```
