@@ -25,7 +25,6 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Header.Get("X-FormSG-Signature"))
 	err := webhooks.Authenticate(r.Header.Get("X-FormSG-Signature"))
 	if err != nil {
-		fmt.Println(err)
 		http.Error(w, `{ "message": "Unauthorized" }`, http.StatusUnauthorized)
 		return
 	}
