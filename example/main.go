@@ -22,7 +22,7 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Authenticate the request using the public key
-	fmt.Println(r.Header.Get("X-FormSG-Signature"))
+	// Please comment the below codes if you are testing in localhost
 	err := webhooks.Authenticate(r.Header.Get("X-FormSG-Signature"))
 	if err != nil {
 		http.Error(w, `{ "message": "Unauthorized" }`, http.StatusUnauthorized)
