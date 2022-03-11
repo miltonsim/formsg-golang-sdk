@@ -53,6 +53,9 @@ type Attachment struct {
 	} `json:"encryptedFile"`
 }
 
+// The built-in copy function only copies to a slice, from a slice.
+// Using [:] makes an array qualify as a slice.
+
 func Decrypt(encryptedBody EncryptedBody) (*DecryptedBody, error) {
 	// Split the encrypted content into the submission public key, nonce, and ciphertext.
 	splits := strings.Split(encryptedBody.Data.EncryptedContent, ";")
