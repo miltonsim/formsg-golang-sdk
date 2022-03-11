@@ -26,6 +26,8 @@ import (
 
 ### Webhook Authentication and Decrypting Submissions
 
+> :warning: **If you are testing on localhost**: Please remember to comment the check for X-FormSG-Signature as you will be using http protocol!
+
 ```go
 package main
 
