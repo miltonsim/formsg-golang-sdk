@@ -74,7 +74,7 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// save the decrypted submission to a file
-	file, err := os.Create(fmt.Sprintf("./forms/%s.json", decryptedBody.Data.SubmissionID))
+	file, err := os.Create(fmt.Sprintf("./temp/%s.json", decryptedBody.Data.SubmissionID))
 	if err != nil {
 		http.Error(w, `{ "message": "file open fail"}`, http.StatusBadRequest)
 		return
@@ -99,7 +99,7 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 					}
 
 					// save attachment to file
-					file2, err := os.Create(fmt.Sprintf("./forms/%s.%s", field.ID, field.Answer))
+					file2, err := os.Create(fmt.Sprintf("./temp/%s.%s", field.ID, field.Answer))
 					if err != nil {
 						log.Panicln(err.Error())
 						http.Error(w, `{ "message": "file open fail"}`, http.StatusBadRequest)
@@ -136,7 +136,13 @@ func main() {
 		os.Setenv("FORM_POST_URI", "https://example.com/submissions")
 	}
 
-	http.Handle("/forms/", http.StripPrefix("/forms/", http.FileServer(http.Dir("./forms"))))
+	// Create temp folder to house the content of the decrypted files from FormSG
+	err := os.Mkdir("temp", 0755)
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	http.Handle("/temp/", http.StripPrefix("/temp/", http.FileServer(http.Dir("./temp"))))
 	http.HandleFunc("/submissions", submissions)
 	http.ListenAndServe(":8080", nil)
 }

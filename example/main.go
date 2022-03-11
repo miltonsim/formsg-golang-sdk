@@ -22,8 +22,10 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Authenticate the request using the public key
+	fmt.Println(r.Header.Get("X-FormSG-Signature"))
 	err := webhooks.Authenticate(r.Header.Get("X-FormSG-Signature"))
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, `{ "message": "Unauthorized" }`, http.StatusUnauthorized)
 		return
 	}
@@ -45,7 +47,7 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// save the decrypted submission to a file
-	file, err := os.Create(fmt.Sprintf("./forms/%s.json", decryptedBody.Data.SubmissionID))
+	file, err := os.Create(fmt.Sprintf("./temp/%s.json", decryptedBody.Data.SubmissionID))
 	if err != nil {
 		http.Error(w, `{ "message": "file open fail"}`, http.StatusBadRequest)
 		return
@@ -70,7 +72,7 @@ func submissions(w http.ResponseWriter, r *http.Request) {
 					}
 
 					// save attachment to file
-					file2, err := os.Create(fmt.Sprintf("./forms/%s.%s", field.ID, field.Answer))
+					file2, err := os.Create(fmt.Sprintf("./temp/%s.%s", field.ID, field.Answer))
 					if err != nil {
 						log.Panicln(err.Error())
 						http.Error(w, `{ "message": "file open fail"}`, http.StatusBadRequest)
@@ -98,16 +100,22 @@ func main() {
 		os.Setenv("FORM_PUBLIC_KEY", "3Tt8VduXsjjd4IrpdCd7BAkdZl/vUCstu9UvTX84FWw=")
 	}
 	if os.Getenv("FORM_SECRET_KEY") == "" {
-		// Your form's secret key downloaded from FormSG upon form creation
-		os.Setenv("FORM_SECRET_KEY", "FORM_SECRET_KEY")
+		// Your form's secret key downloaded from FormSG upon form creation FORM_SECRET_KEY
+		os.Setenv("FORM_SECRET_KEY", "m0+YQrHaHGVnww/m/LKY3+ckquy3PcqmsA5ptaF30e4=")
 	}
 	if os.Getenv("FORM_POST_URI") == "" {
 		// This is where your domain is hosted, and should match
 		// the URI supplied to FormSG in the form dashboard
-		os.Setenv("FORM_POST_URI", "https://example.com/submissions")
+		os.Setenv("FORM_POST_URI", "https://localhost:8080/submissions")
 	}
 
-	http.Handle("/forms/", http.StripPrefix("/forms/", http.FileServer(http.Dir("./forms"))))
+	// Create temp folder to house the content of the decrypted files from FormSG
+	err := os.Mkdir("temp", 0755)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	http.Handle("/temp/", http.StripPrefix("/temp/", http.FileServer(http.Dir("./temp"))))
 	http.HandleFunc("/submissions", submissions)
 	http.ListenAndServe(":8080", nil)
 }
