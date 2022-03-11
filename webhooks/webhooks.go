@@ -48,15 +48,17 @@ func parseHeader(header string) (Header, error) {
 
 func Authenticate(header string) error {
 	h, err := parseHeader(header)
+
 	if err != nil {
 		return err
 	}
 
 	if h.t == "" || h.s == "" || h.f == "" || h.v1 == "" {
-		return fmt.Errorf("header format is invalid")
+		return fmt.Errorf("X-FormSG-Signature header format is invalid")
 	}
 
 	baseString := fmt.Sprintf("%s.%s.%s.%s", os.Getenv("FORM_POST_URI"), h.s, h.f, h.t)
+
 	formPublicKeyBytes, err := base64.StdEncoding.DecodeString(os.Getenv("FORM_PUBLIC_KEY"))
 	if err != nil {
 		return err
@@ -83,7 +85,7 @@ func Authenticate(header string) error {
 	//  Prevents against replay attacks. Allows for negative time interval(-300000 milli sec)
 	//  in case of clock drift between Form servers and recipient server.
 	if epoch.Add(time.Duration(300000) * time.Millisecond).Before(now) {
-		return errors.New("Signature is not recent")
+		return errors.New("signature is not recent")
 	}
 	return nil
 }
