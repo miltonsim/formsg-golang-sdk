@@ -109,9 +109,16 @@ func main() {
 	}
 
 	// Create temp folder to house the content of the decrypted files from FormSG
-	err := os.Mkdir("temp", 0755)
-	if err != nil {
-		log.Fatal(err)
+	_, err := os.Stat("temp")
+
+	if os.IsNotExist(err) {
+		log.Println("Folder does not exist.")
+		err := os.Mkdir("temp", 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		log.Println("Folder exist.")
 	}
 
 	http.Handle("/temp/", http.StripPrefix("/temp/", http.FileServer(http.Dir("./temp"))))
