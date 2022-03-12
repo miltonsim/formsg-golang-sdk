@@ -1,3 +1,5 @@
+_Please note that this is an SDK for webhooks integration, and_ **_not_** _the FormSG system._
+
 # FormSG Golang SDK
 
 This SDK provides convenient utilities for verifying FormSG webhooks and decrypting submissions in golang.
@@ -151,3 +153,21 @@ func main() {
 }
 
 ```
+
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+We welcome all contributions, bug reports, bug fixes, documentation improvements, enhancements, and ideas to improve the SDK. Please see our [contributing guide](/CONTRIBUTING.md).
+
+<!-- LICENSE -->
+
+## License
+
+Distributed under the GNU GPLv3 License. See `LICENSE` for more information.
+
+<!-- ACKNOWLEDGEMENTS -->
+
+## Acknowledgements
+
+Special thanks to the group of FormSG software engineers in Open Government Products who created javascript version of the SDK.
