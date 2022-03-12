@@ -177,4 +177,4 @@ Distributed under the GNU GPLv3 License. See `LICENSE` for more information.
 
 ## Acknowledgements
 
-Special thanks to the group of FormSG software engineers in Open Government Products who created javascript version of the SDK.
+Special thanks to the group of FormSG software engineers in Open Government Products who created the javascript version of the SDK.
