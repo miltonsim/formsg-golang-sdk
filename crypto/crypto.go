@@ -99,6 +99,8 @@ func Decrypt(encryptedBody EncryptedBody) (*DecryptedBody, error) {
 	decryptedBody.Data.Version = encryptedBody.Data.Version
 	decryptedBody.Data.Created = encryptedBody.Data.Created
 
+	fmt.Println((decryptedBody))
+
 	return &decryptedBody, nil
 }
 
